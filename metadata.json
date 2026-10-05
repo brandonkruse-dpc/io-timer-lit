@@ -1,0 +1,8 @@
+{
+  "name": "IB English Lit Oral Visual Timer",
+  "description": "Visual timer and structure planner for the IB Literature Individual Oral (IO) 10-minute presentation with Global Issue check-ins.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
