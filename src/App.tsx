@@ -13,7 +13,7 @@ import { RubricReferenceModal } from './components/RubricReferenceModal';
 import { TimerControls } from './components/TimerControls';
 import { GlobalIssueReminder } from './components/GlobalIssueReminder';
 import { StudentIOData, Segment } from './types';
-import { loadStudentData, saveStudentData, DISCUSSION_SEGMENT, swapAnalysisOrder } from './utils/templates';
+import { loadStudentData, saveStudentData, DISCUSSION_SEGMENT, swapAnalysisOrder, TEMPLATE_PRESETS } from './utils/templates';
 import { audioSynth } from './utils/audio';
 import { useTheme } from './hooks/useTheme';
 
@@ -37,15 +37,19 @@ export default function App() {
 
   // Determine active segments list (including discussion segment if enabled)
   const segments: Segment[] = React.useMemo(() => {
-    if (studentData.includeDiscussion) {
-      const exists = studentData.customSegments.some((s) => s.type === 'discussion');
-      if (exists) return studentData.customSegments;
-      return [...studentData.customSegments, DISCUSSION_SEGMENT];
-    }
-    return studentData.customSegments.filter((s) => s.type !== 'discussion');
-  }, [studentData.customSegments, studentData.includeDiscussion]);
+    const rawList = Array.isArray(studentData?.customSegments) && studentData.customSegments.length > 0
+      ? studentData.customSegments
+      : TEMPLATE_PRESETS[0].segments;
 
-  const currentSegment: Segment = segments[activeSegmentIndex] || segments[0];
+    if (studentData?.includeDiscussion) {
+      const exists = rawList.some((s: Segment) => s.type === 'discussion');
+      if (exists) return rawList;
+      return [...rawList, DISCUSSION_SEGMENT];
+    }
+    return rawList.filter((s: Segment) => s.type !== 'discussion');
+  }, [studentData?.customSegments, studentData?.includeDiscussion]);
+
+  const currentSegment: Segment = segments[activeSegmentIndex] || segments[0] || TEMPLATE_PRESETS[0].segments[0];
 
   // Calculate total oral presentation duration and elapsed
   const totalDurationSeconds = React.useMemo(() => {

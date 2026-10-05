@@ -6,7 +6,16 @@ import {defineConfig} from 'vite';
 export default defineConfig(() => {
   return {
     base: './',
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      {
+        name: 'gh-pages-html-transform',
+        transformIndexHtml(html: string) {
+          return html.replace('window.__IS_RAW_ROOT__ = true;', 'window.__IS_RAW_ROOT__ = false;');
+        },
+      },
+    ],
     resolve: {
       alias: {
         '@': path.resolve('.'),

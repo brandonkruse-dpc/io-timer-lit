@@ -10,6 +10,34 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <script>
+      // Marker for raw root vs compiled static bundle
+      window.__IS_RAW_ROOT__ = true;
+
+      // GitHub Pages Support & Trailing Slash Correction
+      (function() {
+        try {
+          var loc = window.location;
+          var isGitHubPages = loc.hostname.endsWith('github.io');
+          
+          // 1. Ensure trailing slash on GitHub Pages so relative asset paths (./assets/...) resolve properly
+          if (isGitHubPages && !loc.pathname.endsWith('/') && !loc.pathname.split('/').pop().includes('.')) {
+            loc.replace(loc.protocol + '//' + loc.host + loc.pathname + '/' + loc.search + loc.hash);
+            return;
+          }
+
+          // 2. Unbundled Root Fallback: If GitHub Pages is configured to serve from the repository root (not /docs/),
+          // redirect to the compiled /docs/ static bundle so it executes in all browsers without extensions.
+          if (isGitHubPages && window.__IS_RAW_ROOT__ && !loc.pathname.includes('/docs/')) {
+            var basePath = loc.pathname.endsWith('/') ? loc.pathname : loc.pathname + '/';
+            loc.replace(loc.protocol + '//' + loc.host + basePath + 'docs/' + loc.search + loc.hash);
+            return;
+          }
+        } catch (e) {
+          console.warn('Navigation check failed:', e);
+        }
+      })();
+    </script>
+    <script>
       try {
         const theme = localStorage.getItem('ib_oral_theme');
         if (theme === 'light') {
@@ -26,8 +54,15 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Fraunces:ital,opsz,wght@0,9..144,500..800;1,9..144,500..800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
   </head>
   <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-amber-500/30 selection:text-amber-900 dark:selection:text-amber-200 min-h-screen transition-colors duration-150">
-    <div id="root"></div>
+    <div id="root">
+      <!-- Fallback message for environments with disabled scripts or during initial load -->
+      <noscript>
+        <div style="font-family: sans-serif; text-align: center; padding: 40px; background: #0f172a; color: #f8fafc; min-height: 100vh;">
+          <h1>IB Literature Oral Visual Timer</h1>
+          <p>Please enable JavaScript to run this application.</p>
+        </div>
+      </noscript>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

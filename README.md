@@ -39,35 +39,40 @@ Based directly on primary instructional frameworks used by IB Literature educato
 ### Why was it not visible on GitHub Pages previously?
 Vite/React applications cannot be run directly from the raw `main` branch root because browsers cannot interpret `.tsx` files directly. GitHub Pages needs the compiled production output (`dist/` folder).
 
-We have configured **two ready-to-use methods** to deploy this app seamlessly:
+We have configured **three ready-to-use methods** to deploy this app seamlessly:
 
 ---
 
-### Option 1: Automatic Deployment with GitHub Actions (Recommended — Zero setup!)
+### Option 1: Built-in `/docs` Folder (Simplest & Most Reliable — No Actions, No CLI!)
 
-A GitHub Actions workflow is now included at `.github/workflows/deploy.yml`.
+The production bundle is already pre-compiled inside the `/docs` folder.
 
-1. Commit and push your code to your GitHub repository (including the new `.github/` folder).
-2. Go to your repository on GitHub.
-3. Click on **Settings** (tab at the top right of your repo).
-4. In the left sidebar, click **Pages**.
-5. Under **Build and deployment** > **Source**, change the dropdown from **"Deploy from a branch"** to **"GitHub Actions"**.
-6. That's it! GitHub Actions will automatically build the site and deploy it. You can watch the deployment under the **Actions** tab. Your website URL will appear on the Pages settings screen.
+1. Commit and push your code to your GitHub repository.
+2. In your repository on GitHub, click on **Settings** (tab at the top right).
+3. In the left sidebar, click **Pages**.
+4. Under **Build and deployment** > **Source**, choose **"Deploy from a branch"**.
+5. Select branch: **`main`** (or `master`), and in the folder dropdown, select **`/docs`**.
+6. Click **Save**. Your site will be live at `https://<username>.github.io/<repo>/` in under a minute!
 
 ---
 
-### Option 2: 1-Command CLI Deployment (`gh-pages`)
+### Option 2: Automatic Deployment with GitHub Actions
 
-If you prefer deploying directly from your computer terminal:
+A GitHub Actions workflow is included at `.github/workflows/deploy.yml`.
 
-1. In your project directory, run:
-   ```bash
-   npm run deploy
-   ```
-   *(This automatically runs `npm run build` and publishes the `dist` folder to a `gh-pages` branch on your GitHub repository).*
-2. Go to **Settings** > **Pages** in your GitHub repository.
-3. Under **Source**, ensure **"Deploy from a branch"** is selected, with branch **`gh-pages`** and folder **`/ (root)`**.
-4. Click **Save**.
+1. In your GitHub repository, click **Settings** > **Pages**.
+2. Under **Build and deployment** > **Source**, select **"GitHub Actions"**.
+3. Push to `main` — GitHub Actions will automatically compile and publish the site.
+
+---
+
+### Option 3: 1-Command CLI Deployment (`gh-pages`)
+
+If you prefer deploying from your local terminal:
+```bash
+npm run deploy
+```
+*(This automatically runs `npm run build` and publishes to the `gh-pages` branch).*
 
 ---
 

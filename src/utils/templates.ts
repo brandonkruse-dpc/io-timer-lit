@@ -655,7 +655,21 @@ export function loadStudentData(): StudentIOData {
       } else if (parsed.analysisOrder === 'non_literary_first') {
         parsed.analysisOrder = 'translation_first';
       }
-      return { ...DEFAULT_STUDENT_DATA, ...parsed };
+      
+      const merged: StudentIOData = { ...DEFAULT_STUDENT_DATA, ...parsed };
+      if (!Array.isArray(merged.customSegments) || merged.customSegments.length === 0) {
+        merged.customSegments = DEFAULT_STUDENT_DATA.customSegments;
+      }
+      if (!Array.isArray(merged.bullets) || merged.bullets.length === 0) {
+        merged.bullets = DEFAULT_STUDENT_DATA.bullets;
+      }
+      if (!merged.textA || typeof merged.textA !== 'object') {
+        merged.textA = DEFAULT_STUDENT_DATA.textA;
+      }
+      if (!merged.textB || typeof merged.textB !== 'object') {
+        merged.textB = DEFAULT_STUDENT_DATA.textB;
+      }
+      return merged;
     }
   } catch (e) {
     console.error('Failed to load student data from localStorage', e);
